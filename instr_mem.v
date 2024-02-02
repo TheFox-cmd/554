@@ -13,7 +13,7 @@ module instr_mem(clk, rd_en, addr, instr);
 	end
 
 	initial begin
-		$readmemh("C:/Users/erichoffman/Documents/ECE_Classes/ECE552/EricStuff/Project/Tests/instr.hex", instr);
+		$readmemh("I:/ECE554/Miniproj0/demo2/verilog/instr.hex", mem);
 	end
 
 endmodule

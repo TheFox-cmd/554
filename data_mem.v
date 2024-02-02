@@ -1,17 +1,18 @@
-module data_mem(clk, we, addr, wdata, rdata); 
+module data_mem(clk, we, re, addr, wrt_data, rd_data); 
 
 	input clk; 					// clock system
-	input we;					// write enable
+	input we, re;					// write enable
 	input [12:0] addr; 
-	input [15:0] wdata; 
-	output reg [15:0] rdata; 
+	input [15:0] wrt_data; 
+	output reg [15:0] rd_data; 
 
 	reg [15:0] mem [8191:0]; 
 
 	always @(posedge clk) begin
 		if (we) 
-			mem[addr] <= wdata; 
-		rdata <= mem[addr];
+			mem[addr] <= wrt_data; 
+		else if (re)
+			rd_data <= mem[addr];
 	end
 
 endmodule
