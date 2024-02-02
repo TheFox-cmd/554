@@ -98,6 +98,7 @@ br_bool iBRL(.clk(clk), .rst_n(rst_n), .clk_z_ID_EX(clk_z_ID_EX), .clk_nv_ID_EX(
 
 // EXTERNAL DATA OUTPUT 
 assign wdata = p0_EX_DM; 
+assign addr = dst_EX_DM; 
 
 // INTERNAL DATA MEMORY WRITE
 assign DM_we = ~|dst_EX_DM[15:12] & dm_we_EX_DM; 
