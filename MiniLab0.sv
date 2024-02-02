@@ -1,4 +1,4 @@
-module Miniproject_0(
+module MiniLab0(
     input clk, 
     input KEY0,
     input [9:0] SW,
