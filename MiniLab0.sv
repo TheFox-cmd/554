@@ -5,7 +5,7 @@ module MiniLab0(
     output logic [9:0] LEDR
 );
 
-logic rst_n, we, re, mm_re, mm_we;
+logic rst_n, we, re;
 logic [15:0] wdata, addr, rdata;
 
 

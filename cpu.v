@@ -1,9 +1,9 @@
 module cpu(clk,rst_n, wdata, we, addr, re, rdata);
 
 input clk,rst_n;
+input [15:0] rdata; 
 output we, re; 
 output [15:0] addr; 
-input [15:0] rdata; 
 output [15:0] wdata; 
 
 wire [15:0] instr;				// instruction from IM
@@ -58,7 +58,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), .zr_EX_DM(zr_EX_DM), .br_instr_I
 //////////////////////////////
 rf iRF(.clk(clk), .p0_addr(rf_p0_addr), .p1_addr(rf_p1_addr), .p0(p0), .p1(p1),
        .re0(rf_re0), .re1(rf_re1), .dst_addr(rf_dst_addr_DM_WB), .dst(rf_w_data_DM_WB),
- 	   .we(rf_we_DM_WB), .hlt(hlt_DM_WB));
+ 	   .we(rf_we_DM_WB));
 	   
 ///////////////////////////////////
 // Instantiate register src mux //
@@ -84,7 +84,7 @@ data_mem iDM(.clk(clk),.addr(dst_EX_DM[12:0]), .re(dm_re_EX_DM), .we(DM_we), .wr
 //////////////////////////
 // Instantiate dst mux //
 ////////////////////////
-dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(dm_rd_data_EX_DM),
+dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(re ? rdata : dm_rd_data_EX_DM),
                 .dst_EX_DM(dst_EX_DM), .pc_EX_DM(pc_EX_DM), .rf_w_data_DM_WB(rf_w_data_DM_WB),
 				.jmp_imm_EX_DM(jmp_imm_EX_DM));
 	
@@ -104,7 +104,9 @@ assign addr = dst_EX_DM;
 assign DM_we = ~|dst_EX_DM[15:12] & dm_we_EX_DM; 
 
 // EXTERNAL DATA MEMORY WRITE
-assign re = |dst_EX_DM[15:12] & dm_re_EX_DM; 
-assign we = |dst_EX_DM[15:12] & dm_we_EX_DM; 
+//assign re = |dst_EX_DM[15:12] & dm_re_EX_DM; 
+assign re = &dst_EX_DM[15:14] & dm_re_EX_DM;
+//assign we = |dst_EX_DM[15:12] & dm_we_EX_DM;
+assign we = & dst_EX_DM[15:14] & dm_we_EX_DM; 
 	   
 endmodule
