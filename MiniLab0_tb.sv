@@ -16,12 +16,12 @@ module MiniLab0_tb();
         @(negedge clk);
         KEY0 = 1'b1; 
 
-        repeat (1000) begin
+        repeat (20) begin
 
             // Wait
-            repeat (5) @(posedge clk);
+            repeat (10) @(posedge clk);
             SW = $random();
-            repeat (5) @(posedge clk);
+            repeat (10) @(posedge clk);
             // Check
             if (LEDR != SW)
                 $display("Switch: %h, LED: %h\n", SW, LEDR);

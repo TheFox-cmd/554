@@ -8,7 +8,7 @@ module data_mem(clk, we, re, addr, wrt_data, rd_data);
 
 	reg [15:0] mem [8191:0]; 
 
-	always @(posedge clk) begin
+	always @(negedge clk) begin
 		if (we) 
 			mem[addr] <= wrt_data; 
 		else if (re)
