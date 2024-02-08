@@ -6,20 +6,33 @@ module MiniLab0_tb();
     
 
     MiniLab0 iDUT(.clk(clk), .KEY0(KEY0), .SW(SW), .LEDR(LEDR));
+
     initial begin
+
         clk = 1'b0; 
         KEY0 = 1'b0;
-        SW = 10'b1010101010;            // random value on switch 
 
+        // Release reset
         @(negedge clk);
         KEY0 = 1'b1; 
 
-        repeat (2000) @(posedge clk);
+        repeat (1000) begin
+
+            // Wait
+            repeat (5) @(posedge clk);
+            SW = $random();
+            repeat (5) @(posedge clk);
+            // Check
+            if (LEDR != SW)
+                $display("Switch: %h, LED: %h\n", SW, LEDR);
         
+        end
+
         $stop();
         
     end
 
 	always 
-		#5 clk = ~clk; 
+		#5 clk = ~clk;
+        
 endmodule
