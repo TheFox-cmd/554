@@ -40,11 +40,9 @@ always @(negedge clk)
   if(re1)
     p1_tmp <= mem1[p1_addr];
 
-assign p0 = (p0_addr == 4'h0) ? 16'b0 :
-            (re0 && we && (p0_addr == dst_addr)) ? dst : p0_tmp;
+assign p0 = (p0_addr == 4'h0) ? 16'b0 : ((re0 && we && (p0_addr == dst_addr)) ? dst : p0_tmp);
 
-assign p1 = (p1_addr == 4'h0) ? 16'b0 :
-            (re1 && we && (p1_addr == dst_addr)) ? dst : p1_tmp;
+assign p1 = (p1_addr == 4'h0) ? 16'b0 : ((re1 && we && (p1_addr == dst_addr)) ? dst : p1_tmp);
 
 endmodule
   

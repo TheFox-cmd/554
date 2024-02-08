@@ -37,7 +37,7 @@ pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_
 /////////////////////////////////////
 // Instantiate instruction memory //
 ///////////////////////////////////
-instr_mem iIM(.clk(clk), .addr(iaddr), .rd_en(1'b1), .instr(instr));
+instr_mem iIM(.clk(clk), .addr(iaddr[9:0]), .rd_en(1'b1), .instr(instr));
 
 //////////////////////////////////////////////
 // Instantiate register instruction decode //
