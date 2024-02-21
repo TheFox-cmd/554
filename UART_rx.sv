@@ -2,7 +2,7 @@
 module UART_rx
 (
 input wire clk, rst_n, RX, clr_rdy,
-input logic [12:0] DB,			//configurable baud rate introduced in 554
+input wire [12:0] DB,			//configurable baud rate introduced in 554
 output logic [7:0] rx_data,
 output logic rdy
 );
@@ -67,18 +67,19 @@ always_ff @(posedge clk) begin
 	
 	
 typedef enum reg { IDLE, RX_STATE } state_t;
-    state_t state, nxt_state;
-    always_ff @( posedge clk, negedge rst_n ) begin
-        if(!rst_n)
-            state <= IDLE;
-        else
-            state <= nxt_state;
-    end
+state_t state, nxt_state;
+always_ff @( posedge clk, negedge rst_n ) begin
+    if(!rst_n)
+        state <= IDLE;
+    else
+        state <= nxt_state;
+end
+
 always_comb begin
-        start = 1'b0;
-        receiving = 1'b0;
-        set_rdy = 1'b0;
-        nxt_state = state; 
+    start = 1'b0;
+    receiving = 1'b0;
+    set_rdy = 1'b0;
+    nxt_state = state; 
 		
 		
 	case(state)

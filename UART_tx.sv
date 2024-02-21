@@ -4,7 +4,7 @@ module UART_tx
 input wire clk, rst_n,
 input wire trmt,
 input wire [7:0] tx_data,
-input logic [12:0] DB;			//configurable baud rate introduced in 554
+input wire [12:0] DB,			//configurable baud rate introduced in 554
 output logic TX,
 output logic tx_done
 );
@@ -81,7 +81,7 @@ typedef enum reg { IDLE, TX_STATE } state_t;
 //S/R reg to set tx_doness
     always @(posedge clk, negedge rst_n) begin
         if(!rst_n)
-            tx_done <= 1'b0;
+            tx_done <= 1'b1;
         else if(init)
             tx_done <= 1'b0;
         else if(set_done)
