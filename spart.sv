@@ -41,8 +41,10 @@ logic [2:0] tx_remain, rx_filled;
 logic rx_rdy;
 logic rx_q_full;
 logic tx_q_empty;                                                               // 1 if TX CB is empty
+logic [7:0] wr_databus, rd_databus; 
 
-assign databus = ((~iocs_n) || (~iorw_n)) ? 'z :                                 // Read condition
+
+assign databus = ((iocs_n) || ((~iocs_n) && (~iorw_n))) ? 'z :                                 // Read condition
                  (ioaddr == 2'b00) ? buffer_data : 
                  (ioaddr == 2'b01) ? status_data : 
                  (ioaddr == 2'b10) ? DBL : DBH;
@@ -67,13 +69,14 @@ assign DB = {DBH[4:0], DBL};                                                    
 circular_buffer #(8) iBUF_TX(.clk(clk), .rst_n(rst_n), .write_enable(wr_cb_tx), .read_enable(trmt), .write_data(databus), .read_data(tx_data), .full(tx_q_full), .empty(tx_q_empty), .counter(tx_remain));
 circular_buffer #(8) iBUF_RX(.clk(clk), .rst_n(rst_n), .write_enable(rx_rdy), .read_enable(rd_cb_rx), .write_data(rx_data), .read_data(buffer_data), .full(rx_q_full), .empty(rx_q_empty), .counter(rx_filled));
 
-assign wr_cb_tx = (!iocs_n) && (ioaddr == 2'b00) && (!iorw_n);    // write enable from databus for tx cb
-assign rd_cb_rx = (!iocs_n) && (ioaddr == 2'b00) && (iorw_n);     // read enable from databus for rx cb
+ 
+assign wr_cb_tx = (!iocs_n) && (ioaddr == 2'b00) && (!iorw_n) && (!tx_q_full);    // write enable from databus for tx cb
+assign rd_cb_rx = (!iocs_n) && (ioaddr == 2'b00) && (iorw_n) && (!rx_q_empty);     // read enable from databus for rx cb
 assign clr_rx_rdy = !rx_rdy && !rx_q_full;
-// assign trmt = (!iocs_n) && (ioaddr == 2'b01) && (iorw_n);
+assign trmt = !tx_q_empty && tx_done;
 
 UART_tx iTX(.clk(clk), .rst_n(rst_n), .TX(TX), .trmt(trmt), .tx_data(tx_data), .tx_done(tx_done), .DB(DB));
-UART_rx iRX(.clk(clk), .rst_n(rst_n), .RX(RX), .rdy(rx_rdy), .clr_rdy(), .rx_data(rx_data), .DB(DB));
+UART_rx iRX(.clk(clk), .rst_n(rst_n), .RX(RX), .rdy(rx_rdy), .clr_rdy(rx_rdy), .rx_data(rx_data), .DB(DB));
 				   
 endmodule
 

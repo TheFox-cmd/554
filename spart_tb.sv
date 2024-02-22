@@ -14,7 +14,7 @@ module spart_tb();
     wire [7:0] databus;	// bi-directional data bus
     logic [7:0] databus_out, databus_in;
     logic databus_output_enable;
-    assign databus = databus_output_enable ? databus_out : 8'bz;
+    assign databus = databus_output_enable ? databus_out : 'z;
     assign databus_in = databus;
 
     spart iDUT(.clk(clk),.rst_n(rst_n),.iocs_n(iocs_n),.iorw_n(iorw_n),.tx_q_full(tx_q_full),.rx_q_empty(rx_q_empty),.ioaddr(ioaddr),.databus(databus),.TX(TX),.RX(RX));
@@ -34,7 +34,7 @@ module spart_tb();
         iorw_n = 0;
 
         // test filling the TX queue to full.
-        repeat (8) begin
+        repeat (9) begin
             @(negedge clk) databus_out = $random();
         end
 
@@ -65,8 +65,7 @@ module spart_tb();
         databus_output_enable = 0;
         @(negedge clk);
         if(databus_in !== 8'h07)
-            $stop("Number of available entries in TX/RX queue is wrong");        
-        databus_output_enable = 1;
+            $stop("Number of available entries in TX/RX queue is wrong");     
 
         //test baud rate configuration for BD == 57600, 230400, 9600
         @(negedge clk);
@@ -74,6 +73,7 @@ module spart_tb();
         ioaddr = 2'b10;
         iorw_n = 0;
         databus_out = 8'h64;
+        databus_output_enable = 1;
         @(negedge clk);
         ioaddr = 2'b11;
         iorw_n = 0;
@@ -108,7 +108,6 @@ module spart_tb();
         if(iDUT.iTX.DB !== 16'h1458)
             $stop("Baud rate configuration at 9600 is wrong. Should be 16'h1458!");
 
-        
         //interleaved read and write at different rate
 
         //make rx_q empty

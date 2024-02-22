@@ -28,7 +28,10 @@ module circular_buffer #(parameter BUFFER_SIZE = 8)(
                 write_ptr <= write_ptr + 1;
             else
                 write_ptr <= 0;
-            count <= count + 1;
+            if(!(read_enable && !empty))
+                count <= count + 1;
+        end else if(read_enable && !empty) begin
+            count <= count -1 ;
         end
     end
 
@@ -36,21 +39,15 @@ module circular_buffer #(parameter BUFFER_SIZE = 8)(
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             read_ptr <= 0;
-            read_data <= 0;
         end else if (read_enable && !empty) begin
-            read_data <= buffer[read_ptr];
             if(read_ptr < BUFFER_SIZE)
                 read_ptr <= read_ptr + 1;
             else
                 read_ptr <= 0;
-            count <= count - 1;
-        end
-        else begin
-            read_data <= buffer[read_ptr];
         end
 
     end
-
+  assign read_data =  buffer[read_ptr];
     // Status signals
     assign full = (count == BUFFER_SIZE);
     assign empty = (count == 0);
