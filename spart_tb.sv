@@ -22,40 +22,43 @@ module spart_tb();
     initial begin
         // reset
         clk = 0;
-        rst_n = 1;
+        rst_n = 0;
         ioaddr = '0;
         iocs_n = 1;
         RX = 1;
         databus_output_enable = 1;
         databus_out = '0;
         //deassert reset
-        @(negedge clk) rst_n = 0;
+        @(negedge clk) rst_n = 1;
         iocs_n = 0;
+        iorw_n = 0;
 
         // test filling the TX queue to full.
         repeat (8) begin
-            @(negedge clk);
-            databus_out = $random();
-            ioaddr = 2'b00;
-            iorw_n = 0;
+            @(negedge clk) databus_out = $random();
         end
+
         // check
         if (!tx_q_full)
             $stop("tx full not raised");
 
         // test RX queue to near full.
+        
         repeat (7) begin
             @(negedge clk);
             RX = 0;
-            repeat (8) begin
-                @(posedge iDUT.iRX.shift);
-                RX = $random();
-            end
             @(posedge iDUT.iRX.shift);
+            repeat (8) begin
+                RX = $random();
+                @(posedge iDUT.iRX.shift);
+            end
             RX = 1;
+            @(posedge iDUT.iRX.shift);
+            
         end
+        repeat (500) @(posedge clk); 
 
-        //test the status register to check if # entries in CBs are correct
+        // //test the status register to check if # entries in CBs are correct
         @(negedge clk);
         ioaddr = 2'b01;
         iorw_n = 1;
@@ -64,7 +67,6 @@ module spart_tb();
         if(databus_in !== 8'h07)
             $stop("Number of available entries in TX/RX queue is wrong");        
         databus_output_enable = 1;
-        
 
         //test baud rate configuration for BD == 57600, 230400, 9600
         @(negedge clk);
@@ -149,7 +151,7 @@ module spart_tb();
         //wait until 8'hFF has been read from tx_q and sent successfully
         @(posedge iDUT.tx_done);
         if(iDUT.iTX.tx_data !== 8'hFF)
-            $stop("tx_data is wrong. Value supposed to be 8'hFF but found to be %d", iDUT.iTX.tx_data);
+            $stop("tx_data is wrong. Value supposed to be 8'hFF but found to be ");
         end
         join
 
@@ -171,7 +173,7 @@ module spart_tb();
 
         @(posedge iDUT.tx_done);
         if(iDUT.iTX.tx_data !== 8'hAA)
-            $stop("tx_data is wrong. Value supposed to be 8'hAA but found to be %d", iDUT.iTX.tx_data);
+            $stop("tx_data is wrong. Value supposed to be 8'hAA but found to be ");
 
         $stop("YAHOO! Tests passed!");
     end

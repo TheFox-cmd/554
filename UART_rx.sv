@@ -92,6 +92,7 @@ always_comb begin
 		end
 		default:		
 			if(RX_FF2 == 1'b0) begin			// wait until RX is low to begin receiving
+				set_rdy = 1'b0;
 				start = 1'b1;
 				nxt_state = RX_STATE;
 			end
@@ -99,13 +100,14 @@ always_comb begin
 end
 
 // S/R reg to set TX_done
-always_ff @(posedge clk, negedge rst_n)begin
-		if(!rst_n)
-			rdy <= 1'b0;
-		else if(start | clr_rdy)
-			rdy <= 1'b0;
-		else if(set_rdy)
-			rdy <= 1'b1;
-end	
+// always_ff @(posedge clk, negedge rst_n)begin
+// 		if(!rst_n)
+// 			rdy <= 1'b0;
+// 		else if(start | clr_rdy)
+// 			rdy <= 1'b0;
+// 		else if(set_rdy)
+// 			rdy <= 1'b1;
+// end	
+assign rdy = set_rdy;
 endmodule
 `default_nettype wire

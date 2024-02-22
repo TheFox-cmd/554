@@ -7,7 +7,7 @@ module circular_buffer #(parameter BUFFER_SIZE = 8)(
     output logic [7:0] read_data,
     output logic full,
     output logic empty,
-    output logic [3:0] counter
+    output logic [2:0] counter
 );
 
     localparam ADDR_WIDTH = $clog2(BUFFER_SIZE);
@@ -21,7 +21,8 @@ module circular_buffer #(parameter BUFFER_SIZE = 8)(
         if (!rst_n) begin
             write_ptr <= 0;
             count <= 0;
-        end else if (write_enable && !full) begin
+        end 
+        else if (write_enable && !full) begin
             buffer[write_ptr] <= write_data;
             if(write_ptr < BUFFER_SIZE)
                 write_ptr <= write_ptr + 1;
@@ -55,6 +56,6 @@ module circular_buffer #(parameter BUFFER_SIZE = 8)(
     assign empty = (count == 0);
 
 
-assign counter = count; 
+assign counter = count[ADDR_WIDTH-1:0]; 
 
 endmodule
