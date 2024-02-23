@@ -1,0 +1,154 @@
+@0000 B100	// llb R1, 0x00
+@0001 A1C0	// lhb R1, 0xC0
+@0002 B20D	// llb R2, 0x0D
+@0003 A200	// lhb R2, 0x00
+@0004 B30F	// llb R3, 0x0F
+@0005 A300	// lhb R3, 0x00
+@0006 B700	// llb R7, 0x00
+@0007 A710	// lhb R7, 0x10
+@0008 B900	// llb R9, 0x00
+@0009 A910	// lhb R9, 0x10
+@000a B801	// llb R8, 0x01
+@000b A800	// lhb R8, 0x00
+@000c D082	// jal Poll_tx
+@000d B648	// llb R6, 0x48
+@000e A600	// lhb R6, 0x00
+@000f 9614	// sw R6, R1, 4
+@0010 D07E	// jal Poll_tx
+@0011 B665	// llb R6, 0x65
+@0012 A600	// lhb R6, 0x00
+@0013 9614	// sw R6, R1, 4
+@0014 D07A	// jal Poll_tx
+@0015 B66C	// llb R6, 0x6c
+@0016 A600	// lhb R6, 0x00
+@0017 9614	// sw R6, R1, 4
+@0018 D076	// jal Poll_tx
+@0019 B66C	// llb R6, 0x6c
+@001a A600	// lhb R6, 0x00
+@001b 9614	// sw R6, R1, 4
+@001c D072	// jal Poll_tx
+@001d B66F	// llb R6, 0x6f
+@001e A600	// lhb R6, 0x00
+@001f 9614	// sw R6, R1, 4
+@0020 D06E	// jal Poll_tx
+@0021 B620	// llb R6, 0x20
+@0022 A600	// lhb R6, 0x00
+@0023 9614	// sw R6, R1, 4
+@0024 D06A	// jal Poll_tx
+@0025 B657	// llb R6, 0x57
+@0026 A600	// lhb R6, 0x00
+@0027 9614	// sw R6, R1, 4
+@0028 D066	// jal Poll_tx
+@0029 B66F	// llb R6, 0x6f
+@002a A600	// lhb R6, 0x00
+@002b 9614	// sw R6, R1, 4
+@002c D062	// jal Poll_tx
+@002d B672	// llb R6, 0x72
+@002e A600	// lhb R6, 0x00
+@002f 9614	// sw R6, R1, 4
+@0030 D05E	// jal Poll_tx
+@0031 B66C	// llb R6, 0x6c
+@0032 A600	// lhb R6, 0x00
+@0033 9614	// sw R6, R1, 4
+@0034 D05A	// jal Poll_tx
+@0035 B664	// llb R6, 0x64
+@0036 A600	// lhb R6, 0x00
+@0037 9614	// sw R6, R1, 4
+@0038 8614	// lw R6, R1, 4
+@0039 2662	// sub R6, R6, R2
+@003a C1FD	// b neq, WaitEnter
+@003b B648	// llb R6, 0x48
+@003c A600	// lhb R6, 0x00
+@003d 9614	// sw R6, R1, 4
+@003e D050	// jal Poll_tx
+@003f B665	// llb R6, 0x65
+@0040 A600	// lhb R6, 0x00
+@0041 9614	// sw R6, R1, 4
+@0042 D04C	// jal Poll_tx
+@0043 B66C	// llb R6, 0x6c
+@0044 A600	// lhb R6, 0x00
+@0045 9614	// sw R6, R1, 4
+@0046 D048	// jal Poll_tx
+@0047 B66C	// llb R6, 0x6c
+@0048 A600	// lhb R6, 0x00
+@0049 9614	// sw R6, R1, 4
+@004a D044	// jal Poll_tx
+@004b B66F	// llb R6, 0x6f
+@004c A600	// lhb R6, 0x00
+@004d 9614	// sw R6, R1, 4
+@004e D040	// jal Poll_tx
+@004f B620	// llb R6, 0x20
+@0050 A600	// lhb R6, 0x00
+@0051 9614	// sw R6, R1, 4
+@0052 D03C	// jal Poll_tx
+@0053 B63C	// llb R6, 0x3C
+@0054 A600	// lhb R6, 0x00
+@0055 9614	// sw R6, R1, 4
+@0056 D038	// jal Poll_tx
+@0057 B66E	// llb R6, 0x6E
+@0058 A600	// lhb R6, 0x00
+@0059 9614	// sw R6, R1, 4
+@005a D034	// jal Poll_tx
+@005b B661	// llb R6, 0x61
+@005c A600	// lhb R6, 0x00
+@005d 9614	// sw R6, R1, 4
+@005e D030	// jal Poll_tx
+@005f B66D	// llb R6, 0x6D
+@0060 A600	// lhb R6, 0x00
+@0061 9614	// sw R6, R1, 4
+@0062 D02C	// jal Poll_tx
+@0063 B665	// llb R6, 0x65
+@0064 A600	// lhb R6, 0x00
+@0065 9614	// sw R6, R1, 4
+@0066 D028	// jal Poll_tx
+@0067 B63E	// llb R6, 0x3E
+@0068 A600	// lhb R6, 0x00 
+@0069 9614	// sw R6, R1, 4
+@006a D029	// jal Poll_rx
+@006b 8614	// lw R6, R1, 4
+@006c 9670	// sw R6, R7, 0
+@006d 2662	// sub R6, R6, R2
+@006e C202	// b eq, PrintHello
+@006f 0778	// add R7, R7, R8
+@0070 DFF9	// jal inputName
+@0071 B648	// llb R6, 0x48
+@0072 A600	// lhb R6, 0x00
+@0073 9614	// sw R6, R1, 4
+@0074 D01A	// jal Poll_tx
+@0075 B665	// llb R6, 0x65
+@0076 A600	// lhb R6, 0x00
+@0077 9614	// sw R6, R1, 4
+@0078 D016	// jal Poll_tx
+@0079 B66C	// llb R6, 0x6c
+@007a A600	// lhb R6, 0x00
+@007b 9614	// sw R6, R1, 4
+@007c D012	// jal Poll_tx
+@007d B66C	// llb R6, 0x6c
+@007e A600	// lhb R6, 0x00
+@007f 9614	// sw R6, R1, 4
+@0080 D00E	// jal Poll_tx
+@0081 B66F	// llb R6, 0x6f
+@0082 A600	// lhb R6, 0x00
+@0083 9614	// sw R6, R1, 4
+@0084 D00A	// jal Poll_tx
+@0085 B620	// llb R6, 0x20
+@0086 A600	// lhb R6, 0x00
+@0087 9614	// sw R6, R1, 4
+@0088 D006	// jal Poll_tx
+@0089 8690	// lw R6, R9, 0
+@008a 9614	// sw R6, R1, 4
+@008b 0998	// add R9, R9, R8
+@008c 2A79	// sub R10, R7, R9
+@008d C1FB	// b neq, Print
+@008e CE0A	// b uncond, Loop
+@008f 8415	// lw R4, R1, 5
+@0090 A400	// lhb R4, 0x00
+@0091 2443	// sub R4, R4, R3
+@0092 CBFC	// b lte, Poll_tx
+@0093 E0F0	// jr R15
+@0094 8415	// lw R4, R1, 5
+@0095 544C	// sll R4, R4, 12
+@0096 2440	// sub R4, R4, R0
+@0097 C3FC	// b eq, Poll_rx
+@0098 E0F0	// jr R15
+@0099 CFFF	// b uncond, Loop
