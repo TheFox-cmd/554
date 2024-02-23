@@ -14,7 +14,7 @@ module instr_mem(clk, rd_en, addr, instr);
 
 	initial begin
 		// $readmemh("I:/ECE554/Miniproj0/demo2/verilog/instr.hex", mem);
-		$readmemh("I:/ECE554/Miniproj0/MiniLab0_test.hex", mem);
+		$readmemh("I:/ECE554/554-Miniproject1/HelloWorld.hex", mem);
 	end
 
 endmodule
