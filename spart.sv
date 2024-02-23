@@ -37,19 +37,19 @@ logic tx_done;
 logic trmt;                                                                     // Start signal for UART_tx
 logic [7:0] buffer_data, status_data, DBL, DBH;                                 // Registers                  
 logic [12:0] DB;                                                                // Baud Rate
-logic [2:0] tx_remain, rx_filled; 
+logic [3:0] tx_remain, rx_filled; 
 logic rx_rdy;
 logic rx_q_full;
 logic tx_q_empty;                                                               // 1 if TX CB is empty
 logic [7:0] wr_databus, rd_databus; 
 
 
-assign databus = ((iocs_n) || ((~iocs_n) && (~iorw_n))) ? 'z :                                 // Read condition
+assign databus = (iocs_n || ~iorw_n) ? 'z :                                 // Read condition
                  (ioaddr == 2'b00) ? buffer_data : 
                  (ioaddr == 2'b01) ? status_data : 
                  (ioaddr == 2'b10) ? DBL : DBH;
 
-assign status_data = {{1'b0, tx_remain[2:0]}, {1'b0, rx_filled[2:0]}};
+assign status_data = {{tx_remain}, {rx_filled}};
 
 always_ff @(posedge clk, negedge rst_n) begin
     if(!rst_n) begin                                                            // reset DB register
@@ -79,16 +79,3 @@ UART_tx iTX(.clk(clk), .rst_n(rst_n), .TX(TX), .trmt(trmt), .tx_data(tx_data), .
 UART_rx iRX(.clk(clk), .rst_n(rst_n), .RX(RX), .rdy(rx_rdy), .clr_rdy(rx_rdy), .rx_data(rx_data), .DB(DB));
 				   
 endmodule
-
-// /*
-// // This flop delays the signal tx_done by 1 cycle, allowing circular buffer to correctly output the next byte before passing it into UART_tx
-// always_ff @(posedge clk, negedge rst_n) begin
-//     if (!rst_n)
-//         trmt <= 1'b0;
-//     else if (!empty)
-//         trmt <= tx_done;
-//     else
-//         trmt <= 1'b0;
-// end
-
-// */
