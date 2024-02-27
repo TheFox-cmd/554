@@ -30,17 +30,19 @@ module spart_tb();
         databus_out = '0;
         //deassert reset
         @(negedge clk) rst_n = 1;
+        databus_out = $random();
         iocs_n = 0;
         iorw_n = 0;
 
         // test filling the TX queue to full.
-        repeat (9) begin
+        repeat (8) begin
             @(negedge clk) databus_out = $random();
         end
+        repeat (500) @(posedge clk); 
 
         // check
         if (!tx_q_full)
-            $display("tx full not raised");
+            $stop("tx full not raised");
 
         // test RX queue to near full.
         
@@ -108,8 +110,7 @@ module spart_tb();
         if(iDUT.iTX.DB !== 16'h1458)
             $display("Baud rate configuration at 9600 is wrong. Should be 16'h1458!");
 
-        //interleaved read and write at different rate
-
+        
         //make rx_q empty
         repeat (7) begin
             @(negedge clk);
@@ -120,7 +121,7 @@ module spart_tb();
         //wait until 2 queues are empty
         @(posedge iDUT.tx_q_empty);
         if (~rx_q_empty)
-            $display("RX queue not empty");
+            $stop("RX queue not empty");
 
         //write value 8'hFF to tx_q
         @(negedge clk);
@@ -145,14 +146,13 @@ module spart_tb();
         // @(posedge iDUT.rx_rdy);
         if(rx_q_empty === 1'b1)
             $display("rx queue should not be empty");
-        $stop();
         
         // begin
-        // //wait until 8'hFF has been read from tx_q and sent successfully
-        // @(posedge iDUT.tx_done);
-        // if(iDUT.iTX.tx_data !== 8'hFF)
-        //     $display("tx_data is wrong. Value supposed to be 8'hFF but found to be ");
-        // end
+        //wait until 8'hFF has been read from tx_q and sent successfully
+        @(posedge iDUT.tx_done);
+        if(iDUT.iTX.tx_data !== 8'hFF)
+            $display("tx_data is wrong. Value supposed to be 8'hFF but found to be ");
+        
         // join
 
         //change BD rate back to 57600
@@ -177,7 +177,6 @@ module spart_tb();
 
         $display("YAHOO! Tests passed!");
         $stop();
-
     end
 
     always  begin
